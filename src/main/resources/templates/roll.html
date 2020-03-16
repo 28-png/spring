@@ -2,17 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>roll the dice</title>
+   <title>roll the dice</title>
 </head>
 <body>
-<form action="/roll-dice/{n}" method="post">
-    <input type="submit" name="n" value="1">
-    <input type="submit" name="n" value="2">
-    <input type="submit" name="n" value="3">
-    <input type="submit" name="n" value="4">
-    <input type="submit" name="n" value="5">
-    <input type="submit" name="n" value="6">
-</form>
-<h1></h1>
+<h3><a th:href="@{/roll/1}">1</a></h3>
+<h3><a th:href="@{roll/2}">2</a></h3>
+<h3><a th:href="@{/roll/3}">3</a></h3>
+<h3><a th:href="@{/roll/4}">4</a></h3>
+<h3><a th:href="@{/roll/5}">5</a></h3>
+<h3><a th:href="@{/roll/6}">6</a></h3>
 </body>
 </html>
