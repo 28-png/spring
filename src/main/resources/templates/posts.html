@@ -8,5 +8,6 @@
 <h1 th:text="${title}"></h1>
 <h3 th:text="${postDate}"></h3>
 <p th:text="${body}"></p>
+    <a href="${pageContext.request.contextPath }/posts/delete/${id}" onclick="return confirm('Are you sure?')">Delete</a>
 </body>
 </html>

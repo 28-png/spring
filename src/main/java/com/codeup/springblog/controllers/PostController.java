@@ -41,17 +41,23 @@ public class PostController {
 //        return "create a new post";
 //    }
 
-    @DeleteMapping("/posts/delete")
-    public String delete(@RequestParam int id, Model model) {
-        Post post = postsDao.findPostById(id);
-        String deleteTitle = post.getTitle();
-        Date deleteDate = post.getDate();
-        String deleteBody = post.getBody();
-        model.addAttribute("title", deleteTitle);
-        model.addAttribute("postDate", deleteDate);
-        model.addAttribute("body", deleteBody);
+//    @DeleteMapping("/posts/delete")
+//    public String delete(@RequestParam int id, Model model) {
+//        Post post = postsDao.findPostById(id);
+//        String deleteTitle = post.getTitle();
+//        Date deleteDate = post.getDate();
+//        String deleteBody = post.getBody();
+//        model.addAttribute("title", deleteTitle);
+//        model.addAttribute("postDate", deleteDate);
+//        model.addAttribute("body", deleteBody);
+//        postsDao.deleteById(id);
+//        return "posts";
+//    }
+
+    @RequestMapping(value = "delete/{id}", method = RequestMethod.GET)
+    public String delete(@PathVariable("id") int id) {
         postsDao.deleteById(id);
-        return "posts";
+        return "redirect:/posts";
     }
 
 
