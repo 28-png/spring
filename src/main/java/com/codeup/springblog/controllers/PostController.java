@@ -53,10 +53,9 @@ public class PostController {
         return "edit";
     }
     @PostMapping("/posts/{id}/edit")
-    public String updatePost(@PathVariable long id, @RequestParam String title, @RequestParam Date date ,@RequestParam String body) {
+    public String updatePost(@PathVariable long id, @RequestParam String title ,@RequestParam String body) {
         Post p = postsDao.getOne(id);
         p.setTitle(title);
-        p.setDate(date);
         p.setBody(body);
         postsDao.save(p);
         return "redirect:/posts";

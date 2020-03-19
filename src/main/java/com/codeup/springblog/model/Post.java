@@ -4,10 +4,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "posts")
 public class Post {
+
+
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 @Column(nullable = false, columnDefinition = "INT(11) UNSIGNED")
@@ -19,6 +22,17 @@ public class Post {
     private Date date;
 @Column(nullable = false, columnDefinition = "VARCHAR(255)")
     private String body;
+    @ManyToOne
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 
     public long getId() {
         return id;
@@ -54,9 +68,10 @@ public class Post {
 
     public Post() {}
 
-    public Post(String title, Date date, String body) {
+    public Post(String title, Date date, String body, User user) {
         this.title = title;
         this.date = date;
         this.body = body;
+        this.user = user;
     }
 }
