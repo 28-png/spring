@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User that Edited</title>
+</head>
+<body>
+<main class="container">
+    <form th:action="@{/posts/${id}/show}" th:method="post">
+        <h3 th:text="${email}"> edited this post</h3>
+    </form>
+</main>
+</body>
+</html>

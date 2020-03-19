@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-  <title>Here are your posts</title>
+ <title>Here are your posts</title>
 </head>
 <body>
 <main class="container">
     <div th:each="post : ${posts}">
         <h1 th:text="${post.title}"></h1>
-        <p th:text="${post.body}"></p>
+       <p th:text="${post.body}"></p>
         <a th:href="@{|/posts/${post.id}/edit|}">Edit Post</a>
        <form th:action="@{|/posts/${post.id}/delete|}" th:method="POST">
             <button>Delete Post</button>

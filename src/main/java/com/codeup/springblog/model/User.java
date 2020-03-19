@@ -18,6 +18,8 @@ public class User {
     private String username;
     @Column(nullable = false)
     private String email;
+    @Column(nullable = false)
+    private String password;
 
     public long getId() {
         return id;
@@ -51,8 +53,6 @@ public class User {
         this.password = password;
     }
 
-    @Column(nullable = false)
-    private String password;
 
     public List<Post> getPost() {
         return post;
@@ -61,6 +61,8 @@ public class User {
     public void setPost(List<Post> post) {
         this.post = post;
     }
+
+    public User() {}
 
     public User(String username, String email, String password, List<Post> post) {
         this.username = username;

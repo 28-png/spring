@@ -2,19 +2,23 @@ package com.codeup.springblog.controllers;
 
 import com.codeup.springblog.Posts;
 import com.codeup.springblog.model.Post;
-import org.springframework.format.annotation.DateTimeFormat;
+import com.codeup.springblog.model.User;
+import com.codeup.springblog.model.UserRepo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-
 @Controller
 public class PostController {
     private final Posts postsDao;
-    public PostController(Posts postsDao) {
+    private final UserRepo usersDao;
+    public PostController(Posts postsDao, UserRepo usersDao) {
         this.postsDao = postsDao;
+        this.usersDao = usersDao;
     }
+
+
+
 
     @GetMapping("/posts")
     public String getPosts(Model model) {
@@ -22,9 +26,10 @@ public class PostController {
         return "posts";
     }
 
-    @GetMapping("/posts/{id}")
+    @GetMapping("/posts/{id}/show")
     @ResponseBody
-    public String getPost(@PathVariable int id) {
+    public String getPost(@PathVariable int id, @RequestParam String email, Model model) {
+        model.addAttribute("email", usersDao.findByEmail(email));
         return "view an individual post, id="+id;
     }
 
@@ -52,14 +57,18 @@ public class PostController {
         model.addAttribute("post", postToEdit);
         return "edit";
     }
+
     @PostMapping("/posts/{id}/edit")
     public String updatePost(@PathVariable long id, @RequestParam String title ,@RequestParam String body) {
         Post p = postsDao.getOne(id);
+        User u = usersDao.getOne(1L);
+        u.setId(1L);
         p.setTitle(title);
         p.setBody(body);
         postsDao.save(p);
-        return "redirect:/posts";
+        return "redirect:/posts/{id}/show";
     }
+
 
 
 }
