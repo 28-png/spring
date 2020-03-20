@@ -1,9 +1,10 @@
 package com.codeup.springblog.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -17,12 +18,14 @@ public class Post {
     private long id;
 @Column(nullable = false, length = 200, unique = true)
     private String title;
-@Column(nullable = false, name = "post_date", columnDefinition = "DATE")
-@DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date;
+//@Column(nullable = false, name = "post_date", columnDefinition = "DATE")
+//@DateTimeFormat(pattern = "yyyy-MM-dd")
+//    private Date date;
 @Column(nullable = false, columnDefinition = "VARCHAR(255)")
     private String body;
+
     @ManyToOne
+    @JoinColumn(name="user_id")
     private User user;
 
     public User getUser() {
@@ -32,7 +35,6 @@ public class Post {
     public void setUser(User user) {
         this.user = user;
     }
-
 
     public long getId() {
         return id;
@@ -50,13 +52,13 @@ public class Post {
         this.title = title;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
+//    public Date getDate() {
+//        return date;
+//    }
+//
+//    public void setDate(Date date) {
+//        this.date = date;
+//    }
 
     public String getBody() {
         return body;
@@ -68,9 +70,9 @@ public class Post {
 
     public Post() {}
 
-    public Post(String title, Date date, String body, User user) {
+    public Post(String title, String body, User user) {
         this.title = title;
-        this.date = date;
+//        this.date = date;
         this.body = body;
         this.user = user;
     }

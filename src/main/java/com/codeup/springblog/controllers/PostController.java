@@ -1,8 +1,8 @@
 package com.codeup.springblog.controllers;
 
+import com.codeup.springblog.EmailClass;
 import com.codeup.springblog.Posts;
 import com.codeup.springblog.model.Post;
-import com.codeup.springblog.model.User;
 import com.codeup.springblog.model.UserRepo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
     private final Posts postsDao;
     private final UserRepo usersDao;
-    public PostController(Posts postsDao, UserRepo usersDao) {
+    private final EmailClass emailService;
+    public PostController(Posts postsDao, UserRepo usersDao, EmailClass emailService) {
         this.postsDao = postsDao;
         this.usersDao = usersDao;
+        this.emailService = emailService;
     }
 
 
@@ -26,23 +28,26 @@ public class PostController {
         return "posts";
     }
 
-    @GetMapping("/posts/{id}/show")
-    @ResponseBody
-    public String getPost(@PathVariable int id, @RequestParam String email, Model model) {
-        model.addAttribute("email", usersDao.findByEmail(email));
-        return "view an individual post, id="+id;
+   @GetMapping("/posts/{id}")
+    public String getPost(@PathVariable long id, Model model) {
+        model.addAttribute("post", postsDao.getOne(id));
+        return "posts/show";
     }
 
     @GetMapping("/posts/create")
-    @ResponseBody
-    public String getCreatePostForm(){
-        return "view the form for creating a post";
+    public String showCreatePostForm(Model model){
+        model.addAttribute("newPost", new Post());
+        return "posts/create";
     }
 
     @PostMapping("/posts/create")
-    @ResponseBody
-    public String createPost(){
-        return "create a new post";
+    public String createPost(@ModelAttribute Post newPost, @RequestParam String title, @RequestParam String body ){
+        newPost.setTitle(title);
+        newPost.setBody(body);
+        newPost.setUser(usersDao.getOne(1L));
+        postsDao.save(newPost);
+        emailService.prepareAndSend(newPost, title, body);
+        return "redirect:/posts";
     }
 
     @PostMapping("/posts/{id}/delete")
@@ -61,14 +66,10 @@ public class PostController {
     @PostMapping("/posts/{id}/edit")
     public String updatePost(@PathVariable long id, @RequestParam String title ,@RequestParam String body) {
         Post p = postsDao.getOne(id);
-        User u = usersDao.getOne(1L);
-        u.setId(1L);
         p.setTitle(title);
         p.setBody(body);
         postsDao.save(p);
-        return "redirect:/posts/{id}/show";
+        return "redirect:/posts";
     }
-
-
 
 }
