@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <head>
    <meta charset="UTF-8">
    <title>User that Edited</title>
@@ -7,6 +7,11 @@
 <body>
     <h1 th:text="${post.title}"></h1>
     <p th:text="${post.body}"></p>
-        <h3 th:text="${post.user.email}"> created this post</h3>
+       <h3 th:text="${post.user.email}"> created this post</h3>
+    <div sec:authorize="isAuthenticated()">
+        <div th:if="user.id == post.user.id">
+            <a th:href="@{|/posts/${post.id}/edit|}"><button>Edit Post</button></a>
+        </div>
+    </div>
 </body>
 </html>
