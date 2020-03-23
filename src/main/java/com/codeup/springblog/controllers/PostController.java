@@ -64,12 +64,15 @@ public class PostController {
     @GetMapping("/posts/{id}/edit")
     public String editForm(@PathVariable long id, Model model) {
         Post postToEdit = postsDao.getOne(id);
+        User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (loggedInUser.getId() == postsDao.getOne(id).getUser().getId())
         model.addAttribute("post", postToEdit);
         return "edit";
     }
 
     @PostMapping("/posts/{id}/edit")
     public String updatePost(@PathVariable long id, @RequestParam String title ,@RequestParam String body) {
+
         Post p = postsDao.getOne(id);
         p.setTitle(title);
         p.setBody(body);
