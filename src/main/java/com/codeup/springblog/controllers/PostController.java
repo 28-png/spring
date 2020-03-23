@@ -44,9 +44,10 @@ public class PostController {
 
     @PostMapping("/posts/create")
     public String createPost(@ModelAttribute Post newPost, @RequestParam String title, @RequestParam String body ){
+        User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         newPost.setTitle(title);
         newPost.setBody(body);
-        newPost.setUser(usersDao.getOne(1L));
+        newPost.setUser(loggedInUser.getId());
         postsDao.save(newPost);
         emailService.prepareAndSend(newPost, title, body);
         return "redirect:/posts";
@@ -69,7 +70,6 @@ public class PostController {
 
     @PostMapping("/posts/{id}/edit")
     public String updatePost(@PathVariable long id, @RequestParam String title ,@RequestParam String body) {
-
         Post p = postsDao.getOne(id);
         p.setTitle(title);
         p.setBody(body);
