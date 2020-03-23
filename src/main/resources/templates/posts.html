@@ -5,11 +5,18 @@
     <title>Here are your posts</title>
 </head>
 <body>
+<div class="wrapper">
+    <nav th:replace="partials/navbar :: navbar"></nav>
+    <header class="container my-5">
+        <div class="jumbotron">
+            <h1 class="text-center display-1">Posts</h1>
+        </div>
+    </header>
 <main class="container">
     <div th:each="post : ${posts}">
         <h1 th:text="${post.title}"></h1>
         <p th:text="${post.body}"></p>
-        <!--        <h3 th:text="${post.user.email}"></h3>-->
+       <!--        <h3 th:text="${post.user.email}"></h3>-->
         <a th:href="@{|/posts/${post.id}/edit|}">Edit Post</a>
        <form th:action="@{|/posts/${post.id}/delete|}" th:method="POST">
             <button>Delete Post</button>
