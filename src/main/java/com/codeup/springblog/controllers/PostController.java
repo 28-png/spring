@@ -1,9 +1,11 @@
 package com.codeup.springblog.controllers;
 
+import com.codeup.springblog.model.User;
 import com.codeup.springblog.services.EmailClass;
 import com.codeup.springblog.repositories.Posts;
 import com.codeup.springblog.model.Post;
 import com.codeup.springblog.repositories.UserRepo;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +54,8 @@ public class PostController {
 
     @PostMapping("/posts/{id}/delete")
     public String delete(@PathVariable long id){
+        User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (loggedInUser.getId() == postsDao.getOne(id).getUser().getId())
         postsDao.deleteById(id);
         return "redirect:/posts";
     }
@@ -65,8 +69,8 @@ public class PostController {
 
     @PostMapping("/posts/{id}/edit")
     public String updatePost(@PathVariable long id, @RequestParam String title ,@RequestParam String body) {
-        Post p = postsDao.getOne(id);
 
+        Post p = postsDao.getOne(id);
         p.setTitle(title);
         p.setBody(body);
         postsDao.save(p);
