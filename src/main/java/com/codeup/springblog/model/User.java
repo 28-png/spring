@@ -18,10 +18,19 @@ public class User {
     private long id;
     @Column(nullable = false)
     private String username;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String password;
+
+    public User() {}
+
+    public User(String username, String email, String password, List<Post> post) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.post = post;
+    }
 
     public long getId() {
         return id;
@@ -64,12 +73,5 @@ public class User {
         this.post = post;
     }
 
-    public User() {}
 
-    public User(String username, String email, String password, List<Post> post) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.post = post;
-    }
 }
