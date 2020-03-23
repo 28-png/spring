@@ -47,7 +47,7 @@ public class PostController {
         User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         newPost.setTitle(title);
         newPost.setBody(body);
-        newPost.setUser(loggedInUser.getId());
+        newPost.setUser(loggedInUser);
         postsDao.save(newPost);
         emailService.prepareAndSend(newPost, title, body);
         return "redirect:/posts";

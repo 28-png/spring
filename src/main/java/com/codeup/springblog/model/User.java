@@ -1,5 +1,7 @@
 package com.codeup.springblog.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -37,7 +39,7 @@ public class User {
         this.post = post;
     }
 
-    public User getId() {
+    public long getId() {
         return id;
     }
 
