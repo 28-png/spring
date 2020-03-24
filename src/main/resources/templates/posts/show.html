@@ -7,7 +7,7 @@
 <body>
     <h1 th:text="${post.title}"></h1>
     <p th:text="${post.body}"></p>
-    <a th:href="'mailto:'+${post.user.email}"><span th:text="${post.user.email}"></span> </a>
+   <a th:href="'mailto:'+${post.user.email}"><span th:text="${post.user.email}"></span> </a>
     <br>
     <div sec:authorize="isAuthenticated()">
        <div th:if="user.id == post.user.id">
