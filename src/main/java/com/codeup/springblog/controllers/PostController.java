@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @Controller
 public class PostController {
     private final Posts postsDao;
@@ -31,15 +33,24 @@ public class PostController {
     }
 
    @GetMapping("/posts/{id}")
-    public String getPost(@PathVariable long id, Model model) {
-        model.addAttribute("post", postsDao.getOne(id));
+    public String getPost(@PathVariable long id, Model model, Principal principal) {
+       String userName = "";
+       if (principal != null) {
+           userName = principal.getName();
+       }
+       model.addAttribute("userName", userName);
+       model.addAttribute("post",postsDao.getOne(id));
         return "posts/show";
     }
 
     @GetMapping("/posts/create")
-    public String showCreatePostForm(Model model){
-        model.addAttribute("newPost", new Post());
-        return "posts/create";
+    public String showCreatePostForm(){
+        User loggedIn = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (loggedIn != null)
+            return "posts/create";
+        else
+            return "redirect:/login";
     }
 
     @PostMapping("/posts/create")
