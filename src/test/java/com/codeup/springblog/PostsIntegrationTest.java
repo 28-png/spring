@@ -1,5 +1,6 @@
 package com.codeup.springblog;
 
+import com.codeup.springblog.model.Post;
 import com.codeup.springblog.model.User;
 import com.codeup.springblog.repositories.Posts;
 import com.codeup.springblog.repositories.UserRepo;
@@ -17,11 +18,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import javax.servlet.http.HttpSession;
 
+import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringblogApplication.class)
@@ -91,7 +92,30 @@ public class PostsIntegrationTest {
                 .andExpect(status().is3xxRedirection());
     }
 
+    @Test
+    public void testShowPost() throws Exception {
 
+        Post existingPost = postsDao.findAll().get(0);
+
+        // Makes a Get request to /ads/{id} and expect a redirection to the Ad show page
+        this.mvc.perform(get("/posts/" + existingPost.getId()))
+                .andExpect(status().isOk())
+                // Test the dynamic content of the page
+                .andExpect(content().string(containsString(existingPost.getBody())));
+    }
+
+    @Test
+    public void testAdsIndex() throws Exception {
+        Post existingPost = postsDao.findAll().get(0);
+
+        // Makes a Get request to /ads and verifies that we get some of the static text of the ads/index.html template and at least the title from the first Ad is present in the template.
+        this.mvc.perform(get("/ads"))
+                .andExpect(status().isOk())
+                // Test the static content of the page
+                .andExpect(content().string(containsString("Latest ads")))
+                // Test the dynamic content of the page
+                .andExpect(content().string(containsString(existingPost.getTitle())));
+    }
 
 
 }
