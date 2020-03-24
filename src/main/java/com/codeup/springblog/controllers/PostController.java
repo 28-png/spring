@@ -29,7 +29,7 @@ public class PostController {
     @GetMapping("/posts")
     public String getPosts(Model model) {
         model.addAttribute("posts", postsDao.findAll());
-        return "posts";
+        return "posts/index";
     }
 
    @GetMapping("/posts/{id}")
