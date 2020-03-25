@@ -1,12 +1,19 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
    <meta charset="UTF-8">
    <title>User that Edited</title>
 </head>
 <body>
-    <h1 th:text="${post.title}"></h1>
-    <p th:text="${post.body}"></p>
-        <h3 th:text="${post.user.email}"> created this post</h3>
+<h1 th:text="${post.title}"></h1>
+<p th:text="${post.body}"></p>
+<a th:href="'mailto:'+${post.user.email}"><span th:text="${post.user.email}"></span> </a>
+<br>
+<div sec:authorize="isAuthenticated()">
+    <div th:if="${userName == post.user.username}">
+        <a th:href="@{|/posts/${post.id}/edit|}"><button>Edit Post</button></a>
+    </div>
+</div>
 </body>
 </html>

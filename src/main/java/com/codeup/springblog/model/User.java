@@ -16,12 +16,28 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private long id;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
     private String password;
+
+    public User(User copy) {
+        id = copy.id;
+        email = copy.email;
+        username = copy.username;
+        password = copy.password;
+    }
+
+    public User() {}
+
+    public User(String username, String email, String password, List<Post> post) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.post = post;
+    }
 
     public long getId() {
         return id;
@@ -64,12 +80,5 @@ public class User {
         this.post = post;
     }
 
-    public User() {}
 
-    public User(String username, String email, String password, List<Post> post) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.post = post;
-    }
 }
